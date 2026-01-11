@@ -1,6 +1,6 @@
 # Linux LGTV Control
 
-Linux LGTV Control is a set of tools to control LG WebOS TVs from a Linux system. It allows you to turn the TV on (via Wake-on-LAN) and off (via WebOS API) programmatically. It is designed to run as a systemd sleep hook, automatically turning your TV on/off when your connected PC suspends or resumes.
+Linux LGTV Control is a set of tools to control LG WebOS TVs from a Linux system. It allows you to turn the TV on (via Wake-on-LAN) and off (via WebOS API) programmatically. It is designed to run as a systemd sleep hook, automatically turning your TV on/off when your connected PC suspends or resumes, and as a systemd service, automatically turning your TV on when your PC boots and off when your PC shuts down.
 
 ## Features
 
@@ -20,8 +20,8 @@ Linux LGTV Control is a set of tools to control LG WebOS TVs from a Linux system
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/linux_lgtv_control.git
-    cd linux_lgtv_control
+    git clone https://github.com/randlerepo/lgtv_control.git
+    cd lgtv_control
     ```
 
 2.  **Run the system installer** (Recommended):
