@@ -1,0 +1,14 @@
+[Unit]
+Description=LGTV Control Service (Boot/Shutdown)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# Paths should match the install location /opt/lgtv-control
+ExecStart=/opt/lgtv-control/.venv/bin/python /opt/lgtv-control/lgtv_control.py on
+ExecStop=/opt/lgtv-control/.venv/bin/python /opt/lgtv-control/lgtv_control.py off
+
+[Install]
+WantedBy=multi-user.target
