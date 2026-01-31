@@ -63,7 +63,9 @@ async def auth(ip):
         
         config = load_config()
         config["ip"] = ip
-        config["mac"] = config.get("mac", "") # Preserve if exists, or blank
+        # Try to get MAC from device_id, otherwise fallback to existing or empty
+        mac = client.tv_info.software.get("device_id")
+        config["mac"] = mac if mac else config.get("mac", "")
         config["client_key"] = client.client_key
         save_config(config)
         print(f"Configuration saved to {get_config_file(write=True)}")
