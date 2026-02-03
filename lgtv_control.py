@@ -4,6 +4,7 @@ import socket
 import argparse
 import sys
 import time
+import subprocess
 import os
 from pathlib import Path
 from aiowebostv import WebOsClient
@@ -95,7 +96,7 @@ async def turn_off():
     await client.power_off()
     await client.disconnect()
 
-def turn_on():
+def turn_on_worker():
     config = load_config()
     mac = config.get("mac")
     ip = config.get("ip")
@@ -134,6 +135,16 @@ def turn_on():
     
     print("WoL Packet pulsing finished.")
 
+def turn_on():
+    print("Triggering background wake-up...")
+    # Spawn self detached
+    subprocess.Popen(
+        [sys.executable, sys.argv[0], "_on_worker"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True
+    )
+
 async def main():
     parser = argparse.ArgumentParser(description="LGTV Control")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -147,6 +158,9 @@ async def main():
     
     # Off command
     subparsers.add_parser("off", help="Turn TV Off")
+    
+    # Internal Worker command
+    subparsers.add_parser("_on_worker", help=argparse.SUPPRESS)
 
     # Set MAC command (helper)
     mac_parser = subparsers.add_parser("setmac", help="Set MAC address manaually")
@@ -160,6 +174,8 @@ async def main():
         await turn_off()
     elif args.command == "on":
         turn_on()
+    elif args.command == "_on_worker":
+        turn_on_worker()
     elif args.command == "setmac":
         config = load_config()
         config["mac"] = args.mac
